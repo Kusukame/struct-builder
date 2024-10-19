@@ -309,7 +309,7 @@ func generateNewBuilderFunction(structName string, requiredFields []string) stri
 func generateNewStructFunction(structName string, requiredFields, optionalFields []string, structType *ast.StructType) string {
 	var builder strings.Builder
 	builder.WriteString(fmt.Sprintf("func New%s(", structName))
-	
+
 	allFields := append(requiredFields, optionalFields...)
 	for i, field := range allFields {
 		fieldType := getFieldType(structType, field)
@@ -318,14 +318,14 @@ func generateNewStructFunction(structName string, requiredFields, optionalFields
 			builder.WriteString(", ")
 		}
 	}
-	
+
 	builder.WriteString(fmt.Sprintf(") *%s {\n", structName))
 	builder.WriteString(fmt.Sprintf("\treturn &%s{\n", structName))
-	
+
 	for _, field := range allFields {
 		builder.WriteString(fmt.Sprintf("\t\t%s: %s,\n", field, field))
 	}
-	
+
 	builder.WriteString("\t}\n")
 	builder.WriteString("}\n\n")
 	return builder.String()
