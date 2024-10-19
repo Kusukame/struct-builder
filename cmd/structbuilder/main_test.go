@@ -281,3 +281,88 @@ func TestTypeToString(t *testing.T) {
 		})
 	}
 }
+
+func TestFormatChanType(t *testing.T) {
+	tests := []struct {
+		name     string
+		chanType *ast.ChanType
+		want     string
+	}{
+		{
+			name: "bidirectional channel",
+			chanType: &ast.ChanType{
+				Dir:   ast.SEND | ast.RECV,
+				Value: &ast.Ident{Name: "int"},
+			},
+			want: "chan int",
+		},
+		{
+			name: "send-only channel",
+			chanType: &ast.ChanType{
+				Dir:   ast.SEND,
+				Value: &ast.Ident{Name: "string"},
+			},
+			want: "chan<- string",
+		},
+		{
+			name: "receive-only channel",
+			chanType: &ast.ChanType{
+				Dir:   ast.RECV,
+				Value: &ast.Ident{Name: "bool"},
+			},
+			want: "<-chan bool",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := formatChanType(tt.chanType)
+			if got != tt.want {
+				t.Errorf("formatChanType() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestContains(t *testing.T) {
+	tests := []struct {
+		name  string
+		slice []string
+		item  string
+		want  bool
+	}{
+		{
+			name:  "item exists in slice",
+			slice: []string{"apple", "banana", "cherry"},
+			item:  "banana",
+			want:  true,
+		},
+		{
+			name:  "item does not exist in slice",
+			slice: []string{"apple", "banana", "cherry"},
+			item:  "grape",
+			want:  false,
+		},
+		{
+			name:  "empty slice",
+			slice: []string{},
+			item:  "apple",
+			want:  false,
+		},
+		{
+			name:  "nil slice",
+			slice: nil,
+			item:  "apple",
+			want:  false,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got := contains(tt.slice, tt.item)
+			if got != tt.want {
+				t.Errorf("contains() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
