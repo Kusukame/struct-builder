@@ -132,66 +132,6 @@ func TestHasStructBuilderTag(t *testing.T) {
 	}
 }
 
-// func TestRun(t *testing.T) {
-// 	// Create a temporary directory for testing
-// 	tempDir, err := os.MkdirTemp("", "structbuilder-run-test")
-// 	if err != nil {
-// 		t.Fatalf("Failed to create temp directory: %v", err)
-// 	}
-// 	defer os.RemoveAll(tempDir)
-
-// 	// Create a test Go file
-// 	testFile := filepath.Join(tempDir, "test.go")
-// 	testContent := `
-// package test
-
-// type TestStruct struct {
-// 	Field1 string ` + "`structbuilder:\"required\"`" + `
-// 	Field2 int    ` + "`structbuilder:\"optional\"`" + `
-// }
-// `
-// 	err = os.WriteFile(testFile, []byte(testContent), 0644)
-// 	if err != nil {
-// 		t.Fatalf("Failed to create test file: %v", err)
-// 	}
-
-// 	// Set the rootDir to the temp directory
-// 	originalRootDir := rootDir
-// 	rootDir = tempDir
-// 	defer func() { rootDir = originalRootDir }()
-
-// 	// Run the main function
-// 	err = run()
-// 	if err != nil {
-// 		t.Fatalf("run() failed: %v", err)
-// 	}
-
-// 	// Check if the generated file exists
-// 	generatedFile := filepath.Join(tempDir, generatedFile)
-// 	if _, err := os.Stat(generatedFile); os.IsNotExist(err) {
-// 		t.Errorf("Generated file does not exist: %s", generatedFile)
-// 	}
-
-// 	// Read the content of the generated file
-// 	content, err := os.ReadFile(generatedFile)
-// 	if err != nil {
-// 		t.Fatalf("Failed to read generated file: %v", err)
-// 	}
-
-// 	// Check for expected content in the generated file
-// 	expectedStrings := []string{
-// 		"type TestStructBuilder struct",
-// 		"func NewTestStructBuilder() TestStructField1Builder",
-// 		"func (b *testStructBuilder) Build() *TestStruct",
-// 	}
-
-// 	for _, expected := range expectedStrings {
-// 		if !strings.Contains(string(content), expected) {
-// 			t.Errorf("Expected string not found in generated file: %s", expected)
-// 		}
-// 	}
-// }
-
 func TestCapitalize(t *testing.T) {
 	tests := []struct {
 		input    string
